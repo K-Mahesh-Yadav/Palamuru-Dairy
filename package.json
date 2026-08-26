@@ -18,7 +18,11 @@
     "test:watch": "vitest",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "ci": "npm run typecheck && npm run lint && npm run lint:tokens && npm run test && npm run build"
+    "ci": "npm run typecheck && npm run lint && npm run lint:tokens && npm run test && npm run build && npm run verify:dist",
+    "verify:dist": "node scripts/verify-dist.mjs",
+    "contrast": "node scripts/contrast.mjs",
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "serve:headers": "node scripts/serve-with-headers.mjs"
   },
   "dependencies": {
     "@fontsource/anton": "^5.2.5",

@@ -69,10 +69,18 @@ describe('alpha text utilities', () => {
 
     for (const ground of LIGHT_GROUNDS) {
       it(`text-${utility} on ${ground} clears AA for normal text`, () => {
-        const fg = hex(tokens[name] ?? '#000000')
-        const bg = hex(tokens[ground] ?? '#ffffff')
+        // No literal fallbacks here: an unknown token is a real failure, not
+        // something to paper over with a default colour. (It would also trip
+        // the hex gate in scripts/lint-tokens.mjs, which is the point.)
+        const fgToken = tokens[name]
+        const bgToken = tokens[ground]
+        expect(fgToken, `unknown token: ${name}`).toBeDefined()
+        expect(bgToken, `unknown token: ${ground}`).toBeDefined()
+
+        const fg = hex(fgToken!)
+        const bg = hex(bgToken!)
         const blended = toHex(fg.map((v, i) => v * alpha + (bg[i] ?? 0) * (1 - alpha)))
-        expect(ratio(blended, tokens[ground] ?? '#ffffff')).toBeGreaterThanOrEqual(AA_NORMAL)
+        expect(ratio(blended, bgToken!)).toBeGreaterThanOrEqual(AA_NORMAL)
       })
     }
   }

@@ -1,0 +1,24 @@
+# Security headers — read by Cloudflare Pages AND Netlify (identical format),
+# so the host choice stays portable. PLAN.md B5.
+#
+# NOTE: `vite preview` does NOT apply this file. The CSP must be verified on a
+# real deploy preview URL. That is the classic way a broken CSP reaches prod.
+
+/*
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  X-Frame-Options: DENY
+
+# Hashed assets are immutable by construction.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# The entry document must always be revalidated, or a stale index.html will
+# point at asset hashes that no longer exist.
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
