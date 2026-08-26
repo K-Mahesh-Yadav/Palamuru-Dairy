@@ -8,11 +8,33 @@ import { Products } from '@features/products'
 import { Visit } from '@features/visit'
 import { useHashScroll } from '@shared/hooks'
 
+import { ErrorBoundary } from './ErrorBoundary'
+import { FatalFallback } from './FatalFallback'
+
+/**
+ * NO LAZY LOADING — deliberately, after measuring (PLAN.md B4.6).
+ *
+ * The plan proposed React.lazy + Suspense for the below-the-fold sections and
+ * said to delete it if measurement showed under 10 KB saved. It was built,
+ * measured in Chrome, and removed:
+ *
+ *   - saving was 2.34 KB gzipped (76.08 -> 73.74)
+ *   - it deferred NOTHING. React.lazy inside a rendered <Suspense> starts
+ *     every import on mount, so all 11 chunks were requested within 244ms at
+ *     scrollY 0. Real deferral would need viewport-gated mounting, which is
+ *     machinery a seven-section brochure site does not earn.
+ *   - the actual page weight is the illustrations, and those are deferred by
+ *     loading="lazy" on the img elements, which works with or without this.
+ *
+ * The error boundary below is kept: its justification is independent — a
+ * stale CDN cache can still break a render, and the fallback shows the phone
+ * number as static markup.
+ */
 export function App() {
   useHashScroll()
 
   return (
-    <>
+    <ErrorBoundary fallback={<FatalFallback />}>
       <div className="noise-overlay" aria-hidden="true" />
 
       <a
@@ -34,6 +56,6 @@ export function App() {
       </main>
 
       <Footer />
-    </>
+    </ErrorBoundary>
   )
 }
