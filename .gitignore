@@ -1,0 +1,22 @@
+# dependencies
+node_modules
+
+# build output
+dist
+.vite
+
+# env — never commit real values
+.env
+.env.local
+.env.*.local
+*.local
+
+# test / tooling caches
+coverage
+.eslintcache
+
+# os
+.DS_Store
+Thumbs.db
+
+# NOTE: package-lock.json is deliberately NOT ignored (see PLAN.md B5, dependency policy)

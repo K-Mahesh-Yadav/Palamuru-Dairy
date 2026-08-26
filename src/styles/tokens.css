@@ -1,0 +1,55 @@
+@import 'tailwindcss';
+
+/* ===========================================================================
+   PALAMURU DAIRY — DESIGN TOKENS
+   THE SINGLE SOURCE OF TRUTH. This is the ONLY file in the repo permitted to
+   contain a hex colour literal (enforced by `npm run lint:tokens`).
+
+   Palette provenance: template.md's "Forest and Sage" story, with exactly
+   three approved moves against the banner (PLAN.md A3):
+     1. Forest  #01472e -> #184010   teal-leaning -> warm, matches banner
+     2. Cream   #fefae0 -> #f8f0db   measured banner page ground
+     3. Gold    (none)  -> #e8b84c   the one addition; banner's co-primary
+   Sage, Olive and Moss are byte-identical to template.md.
+   =========================================================================== */
+
+@theme {
+  /* --- Colour ------------------------------------------------------------ */
+  --color-forest: #184010;
+  --color-sage: #ccd5ae;
+  --color-olive: #e9edc9;
+  --color-cream: #f8f0db;
+  --color-moss: #a3b18a;
+  --color-gold: #e8b84c;
+
+  /* --- Typography (template.md, unchanged) -------------------------------- */
+  --font-display: 'Anton', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* --- Radii (template.md, unchanged) ------------------------------------ */
+  --radius-section: 5rem;
+  --radius-card: 2.5rem;
+  --radius-float: 3rem;
+
+  /* --- Motion (template.md, unchanged) ----------------------------------- */
+  --ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-reveal: 1200ms;
+
+  /* --- Elevation --------------------------------------------------------- */
+  /* Forest re-expressed at 20% — a mechanical consequence of move 1, not a
+     separate design decision. template.md: rgba(1, 71, 46, 0.2). */
+  --shadow-float: 0 25px 50px -12px rgb(24 64 16 / 0.2);
+}
+
+/* ---------------------------------------------------------------------------
+   GOLD USAGE RULE (PLAN.md A3.1) — enforced in the primitives, restated here
+   for anyone reading the tokens directly.
+
+     OK   gold text on forest      6.40:1  AA normal
+     OK   forest text on gold fill 6.40:1  AA normal
+     NO   gold text on cream       1.62:1
+     NO   gold text on olive       1.53:1
+     NO   gold text on sage        1.20:1
+
+   There is no API path in shared/ui that produces gold text on a light ground.
+   --------------------------------------------------------------------------- */
