@@ -5,6 +5,13 @@ Static marketing site for Palamuru Dairy, Mahabubnagar, Telangana.
 Vite + React + TypeScript + Tailwind v4. No backend, no form, no analytics,
 no cookies. The conversion path is a phone call or a WhatsApp message.
 
+Two languages, two static documents, no router:
+
+| URL | Language | `<html lang>` |
+|---|---|---|
+| `/` | English | `en-IN` |
+| `/te/` | తెలుగు | `te-IN` |
+
 ## Commands
 
 ```bash
@@ -34,8 +41,12 @@ locally, run `npm run build` then `npm run serve:headers` (port 8788).
 
 ## Where things live
 
-- **All copy** is in `src/content/*.ts` as typed data. No string from the
-  banner appears in any `.tsx`. Change content there, never in a component.
+- **All copy** is in `src/content/<locale>/*.ts` as typed data. No user-facing
+  string appears in any `.tsx` — business copy *or* UI chrome. Change content
+  there, never in a component. `src/content/parity.test.ts` fails if the two
+  locales drift apart structurally.
+- **Locale plumbing** is `src/shared/i18n`. Components read
+  `const { products, ui } = useContent()`; the locale is fixed per build entry.
 - **All colour** is in `src/styles/tokens.css`. It is the only file allowed a
   hex literal, and `npm run lint:tokens` enforces that.
 - **Primitives** (`src/shared/ui`) are the only components that name a token.
@@ -59,8 +70,11 @@ records every decision and its reason.
 
 ## Deploying
 
-Static `dist/`. Recommended host: Cloudflare Pages (build `npm run build`,
-output `dist`, `NODE_VERSION=22`). `public/_headers` is read by both
-Cloudflare Pages and Netlify unchanged.
+Static `dist/` with two documents (`index.html`, `te/index.html`).
+
+**Vercel** is the host: `vercel.json` carries the build config and every
+security header. `public/_headers` is kept so the build stays portable to
+Cloudflare Pages or Netlify, and `npm run verify:dist` asserts the two files
+express the *same* policy — they cannot drift silently.
 
 See `PLAN.md` section B8 and the launch checklist at the end of this file.

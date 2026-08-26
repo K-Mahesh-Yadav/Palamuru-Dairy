@@ -10,6 +10,8 @@
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
+import { globalHeaders } from './serve-with-headers.mjs'
+
 const DIST = join(process.cwd(), 'dist')
 const failures = []
 const checks = []
@@ -179,6 +181,34 @@ for (const header of [
 }
 check("CSP has no 'unsafe-inline'", !headers.includes('unsafe-inline'))
 check("CSP has no 'unsafe-eval'", !headers.includes('unsafe-eval'))
+
+// --- Host config drift ------------------------------------------------------
+// public/_headers (Cloudflare/Netlify format) is kept so the build stays
+// portable, while vercel.json is what actually serves. Two files expressing
+// one policy is exactly what drifts silently, so pin them to each other.
+const vercel = JSON.parse(readFileSync(join(process.cwd(), 'vercel.json'), 'utf8'))
+const globalRule = vercel.headers.find((h) => h.source === '/(.*)')
+check('vercel.json sets headers on every path', globalRule !== undefined)
+
+// Reuse the parser that serves these headers, so the check cannot disagree
+// with the server about what the file means.
+const headersFileGlobal = globalHeaders(headers)
+
+for (const { key, value } of globalRule?.headers ?? []) {
+  check(
+    `vercel.json and _headers agree on ${key}`,
+    headersFileGlobal[key] === value,
+    `vercel sends "${value}" but _headers sends "${headersFileGlobal[key] ?? '(missing)'}"`,
+  )
+}
+
+check(
+  '_headers declares no security header vercel.json lacks',
+  Object.keys(headersFileGlobal).every((k) => (globalRule?.headers ?? []).some((h) => h.key === k)),
+)
+
+check('vercel.json emits the directory these checks read', vercel.outputDirectory === 'dist')
+check('vercel.json installs from the committed lockfile', vercel.installCommand === 'npm ci')
 
 // --- Report -----------------------------------------------------------------
 for (const c of checks) console.log(`  ${c.ok ? 'ok  ' : 'FAIL'} ${c.name}`)

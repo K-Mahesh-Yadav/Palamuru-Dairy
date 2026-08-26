@@ -3,6 +3,26 @@
 Everything below is blocked on information or accounts I do not have. The
 code is complete and CI-green; these are the human steps.
 
+## Blocked on you — Telugu review (NEW, and the top blocker)
+
+| # | Item | Where |
+|---|---|---|
+| 0 | **Native review of the Telugu translation** | `src/content/te/*.ts` |
+
+Every Telugu string was drafted by Claude and carries the English original in
+a comment beside it, so the whole set reads in one pass. Product nouns and the
+place name are low risk. The strings genuinely worth a second opinion:
+
+- `business.wordmarkTagline` — ప్రకృతి సిద్ధమైన స్వచ్ఛత, తరతరాల నమ్మకం
+- `business.scriptHeadline` — ప్రకృతి మంచితనాన్ని మీ ఇంటికి
+- the four `claims`, the four `benefits`, and the nine honey bullets
+- `ui.footer.privacyNote` — this is a factual claim to the visitor, so it must
+  stay true as well as read well
+
+`src/content/te/index.ts` exports `TRANSLATION_REVIEWED = false`. Flip it when
+a fluent speaker has signed off. It is deliberately not a CI gate — no build
+can judge a translation, and a check that fails from day one gets ignored.
+
 ## Blocked on you — content
 
 | # | Item | Where it goes | Why it matters |
@@ -31,7 +51,8 @@ code is complete and CI-green; these are the human steps.
 
 - [ ] Open the deploy preview with DevTools console open: **zero CSP violations**
 - [ ] `securityheaders.com` against the URL: expect **A+**
-- [ ] Lighthouse mobile on the deployed URL (local measured 99/100/100/100)
+- [ ] Lighthouse mobile on **both** `/` and `/te/` (local: 97 and 96, all other categories 100)
+- [ ] Switch language both ways and confirm the URL changes to `/te/` and back
 - [ ] Tab through the whole page: skip link → nav → each product card CTA → footer
 - [ ] Test `tel:` and the WhatsApp link **on a real phone**, not a desktop browser
 - [ ] Submit the domain to Google Search Console
@@ -44,5 +65,8 @@ code is complete and CI-green; these are the human steps.
 - **Lighthouse CI is non-blocking** for two weeks (`continue-on-error: true`
   in `.github/workflows/ci.yml`). Remove that line once the budget is
   calibrated against real runs.
+- **Auto-redirect by `Accept-Language`** was not added: it needs an edge
+  function and can strand a visitor in a language they did not choose. The
+  switcher is always visible instead.
 - **`security.txt`** was not added: there is no security contact address yet,
   and a fake one is worse than none.

@@ -16,8 +16,12 @@ const ROOT = join(process.cwd(), 'dist')
 const HEADERS_FILE = join(process.cwd(), 'public', '_headers')
 const PORT = Number(process.argv[2] ?? 8788)
 
-/** Parse the Cloudflare/Netlify _headers format into [pattern, headers][]. */
-function parseHeaders(text) {
+/**
+ * Parse the Cloudflare/Netlify _headers format into [{pattern, headers}].
+ * Exported so scripts/verify-dist.mjs can assert vercel.json matches it,
+ * rather than maintaining a second parser that could disagree.
+ */
+export function parseHeaders(text) {
   const rules = []
   let current = null
   for (const raw of text.split(/\r?\n/)) {
@@ -37,6 +41,11 @@ function parseHeaders(text) {
 }
 
 const rules = parseHeaders(readFileSync(HEADERS_FILE, 'utf8'))
+
+/** Headers that apply to every path. */
+export function globalHeaders(text) {
+  return parseHeaders(text).find((r) => r.pattern === '/*')?.headers ?? {}
+}
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -59,34 +68,37 @@ function matches(pattern, pathname) {
   return pattern === pathname
 }
 
-createServer((req, res) => {
-  const url = new URL(req.url ?? '/', `http://localhost:${String(PORT)}`)
-  let pathname = decodeURIComponent(url.pathname)
-  if (pathname.endsWith('/')) pathname += 'index.html'
+// Only start the server when run directly — verify-dist.mjs imports the parser.
+if (process.argv[1]?.endsWith('serve-with-headers.mjs') === true) {
+  createServer((req, res) => {
+    const url = new URL(req.url ?? '/', `http://localhost:${String(PORT)}`)
+    let pathname = decodeURIComponent(url.pathname)
+    if (pathname.endsWith('/')) pathname += 'index.html'
 
-  // Reject any traversal outright rather than trying to strip it.
-  const safe = normalize(pathname)
-  if (safe.includes('..')) {
-    res.statusCode = 400
-    res.end('bad path')
-    return
-  }
-  const filePath = join(ROOT, safe)
-  const target =
-    existsSync(filePath) && statSync(filePath).isFile() ? filePath : join(ROOT, 'index.html')
-  const servedPath = target === filePath ? pathname : '/index.html'
+    // Reject any traversal outright rather than trying to strip it.
+    const safe = normalize(pathname)
+    if (safe.includes('..')) {
+      res.statusCode = 400
+      res.end('bad path')
+      return
+    }
+    const filePath = join(ROOT, safe)
+    const target =
+      existsSync(filePath) && statSync(filePath).isFile() ? filePath : join(ROOT, 'index.html')
+    const servedPath = target === filePath ? pathname : '/index.html'
 
-  for (const rule of rules) {
-    if (!matches(rule.pattern, servedPath)) continue
-    for (const [k, v] of Object.entries(rule.headers)) res.setHeader(k, v)
-  }
+    for (const rule of rules) {
+      if (!matches(rule.pattern, servedPath)) continue
+      for (const [k, v] of Object.entries(rule.headers)) res.setHeader(k, v)
+    }
 
-  res.setHeader('Content-Type', TYPES[extname(target)] ?? 'application/octet-stream')
-  res.statusCode = target === filePath ? 200 : 404
-  createReadStream(target).pipe(res)
-}).listen(PORT, () => {
-  console.log(`serving dist/ with public/_headers applied -> http://localhost:${String(PORT)}`)
-  const globalRule = rules.find((r) => r.pattern === '/*')
-  console.log(`\n  ${String(Object.keys(globalRule?.headers ?? {}).length)} headers on /*:`)
-  for (const k of Object.keys(globalRule?.headers ?? {})) console.log(`    ${k}`)
-})
+    res.setHeader('Content-Type', TYPES[extname(target)] ?? 'application/octet-stream')
+    res.statusCode = target === filePath ? 200 : 404
+    createReadStream(target).pipe(res)
+  }).listen(PORT, () => {
+    console.log(`serving dist/ with public/_headers applied -> http://localhost:${String(PORT)}`)
+    const globalRule = rules.find((r) => r.pattern === '/*')
+    console.log(`\n  ${String(Object.keys(globalRule?.headers ?? {}).length)} headers on /*:`)
+    for (const k of Object.keys(globalRule?.headers ?? {})) console.log(`    ${k}`)
+  })
+}
