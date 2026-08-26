@@ -1,8 +1,14 @@
-import { render, screen } from '@testing-library/react'
+import { render as rtlRender, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { ContentProvider } from '@shared/i18n'
 
 import { ErrorBoundary } from './ErrorBoundary'
 import { FatalFallback } from './FatalFallback'
+
+function render(ui: React.ReactElement) {
+  return rtlRender(<ContentProvider locale="en">{ui}</ContentProvider>)
+}
 
 function Boom(): never {
   throw new Error('chunk 404')

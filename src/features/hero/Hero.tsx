@@ -1,4 +1,4 @@
-import { business } from '@content/business'
+import { useContent } from '@shared/i18n'
 import { Container, Heading, Pill, Section } from '@shared/ui'
 
 import { FloatingCard } from './FloatingCard'
@@ -9,6 +9,7 @@ import { FloatingCard } from './FloatingCard'
  * parallax, dual-column bottom with descriptive text and a location label.
  */
 export function Hero() {
+  const { business } = useContent()
   const word = business.name.split(' ')[0] ?? business.name
 
   return (

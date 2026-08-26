@@ -1,5 +1,5 @@
-import { honeyVarieties } from '@content/honey'
 import { useReveal } from '@shared/hooks'
+import { useContent } from '@shared/i18n'
 import { Heading, Pill, ProductGrid } from '@shared/ui'
 
 /**
@@ -8,11 +8,12 @@ import { Heading, Pill, ProductGrid } from '@shared/ui'
  * No new layout system, no `isHoney` boolean.
  */
 export function HoneyRange() {
+  const { honeyVarieties, ui } = useContent()
   const { ref, revealed } = useReveal()
 
   return (
     <ProductGrid.Root tone="cream" id="honey" labelledBy="honey-title">
-      <ProductGrid.Heading id="honey-title">Honey</ProductGrid.Heading>
+      <ProductGrid.Heading id="honey-title">{ui.honey.heading}</ProductGrid.Heading>
 
       <div ref={ref} className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-3">
         {honeyVarieties.map((variety, i) => (

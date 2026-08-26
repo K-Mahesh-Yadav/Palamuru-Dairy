@@ -1,10 +1,11 @@
-import { products } from '@content/products'
 import { useReveal } from '@shared/hooks'
+import { useContent } from '@shared/i18n'
 import { Button, ProductGrid } from '@shared/ui'
 
 import { ProductCard } from './ProductCard'
 
 export function Products() {
+  const { products, ui } = useContent()
   const { ref, revealed } = useReveal()
 
   return (
@@ -13,11 +14,11 @@ export function Products() {
         id="products-title"
         action={
           <Button href="#visit" variant="circle" tone="forest" className="hidden shrink-0 md:flex">
-            Visit us
+            {ui.products.action}
           </Button>
         }
       >
-        Products
+        {ui.products.heading}
       </ProductGrid.Heading>
 
       <div ref={ref} className="grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 md:grid-cols-3">

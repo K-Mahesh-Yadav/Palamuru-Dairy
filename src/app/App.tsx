@@ -7,6 +7,7 @@ import { Nav } from '@features/nav'
 import { Products } from '@features/products'
 import { Visit } from '@features/visit'
 import { useHashScroll } from '@shared/hooks'
+import { useContent } from '@shared/i18n'
 
 import { ErrorBoundary } from './ErrorBoundary'
 import { FatalFallback } from './FatalFallback'
@@ -31,6 +32,7 @@ import { FatalFallback } from './FatalFallback'
  * number as static markup.
  */
 export function App() {
+  const { ui } = useContent()
   useHashScroll()
 
   return (
@@ -41,7 +43,7 @@ export function App() {
         href="#main"
         className="sr-only bg-forest text-cream focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:rounded-full focus:px-6 focus:py-3 focus:text-[11px] focus:font-bold focus:tracking-[0.2em] focus:uppercase"
       >
-        Skip to content
+        {ui.skipToContent}
       </a>
 
       <Nav />

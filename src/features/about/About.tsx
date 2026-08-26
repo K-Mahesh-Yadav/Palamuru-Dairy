@@ -1,6 +1,5 @@
-import { business } from '@content/business'
-import { claims } from '@content/claims'
 import { useReveal } from '@shared/hooks'
+import { useContent } from '@shared/i18n'
 import { Container, Heading, Icon, Illustration, Section } from '@shared/ui'
 
 /**
@@ -13,6 +12,7 @@ import { Container, Heading, Icon, Illustration, Section } from '@shared/ui'
  * A5.4: forest-filled circle with a gold glyph, exactly as the banner does.
  */
 export function About() {
+  const { business, claims, ui } = useContent()
   const { ref, revealed } = useReveal<HTMLUListElement>()
 
   return (
@@ -44,10 +44,7 @@ export function About() {
           </div>
 
           <div className="overflow-hidden rounded-float bg-cream/50">
-            <Illustration
-              name="milkingTheCow"
-              alt="A dairy farmer milking a cow by hand into a pail."
-            />
+            <Illustration name="milkingTheCow" alt={ui.alt.milkingTheCow} />
           </div>
         </div>
       </Container>

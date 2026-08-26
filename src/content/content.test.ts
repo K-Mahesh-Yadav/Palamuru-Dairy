@@ -1,11 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import { benefits } from './benefits'
-import { business } from './business'
-import { claims } from './claims'
-import { honeyVarieties } from './honey'
-import { navItems } from './nav'
-import { products } from './products'
+import { en } from './en'
+
+const { benefits, business, claims, honeyVarieties, navItems, products, ui } = en
 
 /**
  * Content integrity — the highest-value tests on a brochure site.
@@ -145,5 +142,56 @@ describe('product illustrations', () => {
       expect(p.image.alt.length).toBeGreaterThan(15)
       expect(p.image.alt).toMatch(/\.$/)
     }
+  })
+})
+
+describe('ui strings', () => {
+  it('provides every chrome string a component needs', () => {
+    // A missing key would surface as `undefined` rendered into the page.
+    const required: string[] = [
+      ui.skipToContent,
+      ui.nav.menu,
+      ui.nav.close,
+      ui.nav.primaryLabel,
+      ui.nav.call,
+      ui.nav.whatsapp,
+      ui.nav.languageName,
+      ui.nav.switchLanguageLabel,
+      ui.products.heading,
+      ui.products.action,
+      ui.products.enquire,
+      ui.products.enquiryMessage,
+      ui.honey.heading,
+      ui.visit.heading,
+      ui.visit.address,
+      ui.visit.mobile,
+      ui.visit.hours,
+      ui.visit.deliveryAreas,
+      ui.visit.callNow,
+      ui.visit.orderOnWhatsapp,
+      ui.visit.openInMaps,
+      ui.visit.orderMessage,
+      ui.footer.explore,
+      ui.footer.privacy,
+      ui.footer.privacyNote,
+      ui.footer.fssaiPrefix,
+      ui.error.message,
+    ]
+    for (const value of required) expect(value.trim().length).toBeGreaterThan(0)
+  })
+
+  it('declares the placeholders the interpolated messages actually use', () => {
+    expect(ui.products.enquiryMessage).toContain('{business}')
+    expect(ui.products.enquiryMessage).toContain('{product}')
+    expect(ui.visit.orderMessage).toContain('{business}')
+  })
+
+  it('keeps the privacy note factually true', () => {
+    // PLAN.md B5: the site collects nothing. If that ever changes, this note
+    // must change first — it is a claim to the visitor, not decoration.
+    const note = ui.footer.privacyNote.toLowerCase()
+    expect(note).toContain('no cookies')
+    expect(note).toContain('no analytics')
+    expect(note).toContain('no contact form')
   })
 })

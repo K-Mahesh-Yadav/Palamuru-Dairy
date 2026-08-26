@@ -1,4 +1,4 @@
-import type { Claim } from './types'
+import type { Claim } from '../types'
 
 /**
  * The four icon rows in the banner's upper right.

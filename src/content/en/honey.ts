@@ -1,4 +1,4 @@
-import type { HoneyVariety } from './types'
+import type { HoneyVariety } from '../types'
 
 /** Banner section "PURE & NATURAL HONEY". Bullets verbatim, exactly three each. */
 export const honeyVarieties: readonly HoneyVariety[] = [

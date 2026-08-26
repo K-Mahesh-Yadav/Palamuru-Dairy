@@ -1,5 +1,5 @@
-import { business } from '@content/business'
 import { useReveal } from '@shared/hooks'
+import { interpolate, useContent } from '@shared/i18n'
 import { formatPhone, mapsHref, telHref, whatsappHref } from '@shared/lib'
 import { Button, Container, Heading, Illustration, Section } from '@shared/ui'
 
@@ -16,6 +16,7 @@ import { Button, Container, Heading, Illustration, Section } from '@shared/ui'
  * no "coming soon", no placeholder.
  */
 export function Visit() {
+  const { business, ui } = useContent()
   const { ref, revealed } = useReveal()
 
   const fullAddress = [
@@ -33,13 +34,13 @@ export function Visit() {
       <Container width="wide">
         <div ref={ref} className="reveal" data-revealed={revealed}>
           <Heading as="h2" variant="section" id="visit-title">
-            Visit
+            {ui.visit.heading}
           </Heading>
 
           <div className="mt-16 grid gap-12 md:grid-cols-2 md:gap-16">
             <div>
               <p className="font-body text-[11px] font-bold tracking-[0.3em] text-forest/80 uppercase">
-                Address
+                {ui.visit.address}
               </p>
               <address className="mt-4 font-display text-2xl leading-tight text-forest not-italic md:text-3xl">
                 {business.address.line1}
@@ -50,7 +51,7 @@ export function Visit() {
               </address>
 
               <p className="mt-10 font-body text-[11px] font-bold tracking-[0.3em] text-forest/80 uppercase">
-                Mobile
+                {ui.visit.mobile}
               </p>
               <p className="mt-4 font-display text-4xl text-forest md:text-5xl">
                 <a href={telHref(business.phone)} className="hover:opacity-70">
@@ -61,7 +62,7 @@ export function Visit() {
               {business.hours ? (
                 <>
                   <p className="mt-10 font-body text-[11px] font-bold tracking-[0.3em] text-forest/80 uppercase">
-                    Hours
+                    {ui.visit.hours}
                   </p>
                   <ul className="mt-4 space-y-1 font-body text-sm text-forest">
                     {business.hours.map((h) => (
@@ -76,7 +77,7 @@ export function Visit() {
               {business.deliveryAreas ? (
                 <>
                   <p className="mt-10 font-body text-[11px] font-bold tracking-[0.3em] text-forest/80 uppercase">
-                    We deliver to
+                    {ui.visit.deliveryAreas}
                   </p>
                   <p className="mt-4 font-body text-sm text-forest">
                     {business.deliveryAreas.join(' · ')}
@@ -86,29 +87,26 @@ export function Visit() {
 
               <div className="mt-12 flex flex-wrap gap-3">
                 <Button href={telHref(business.phone)} tone="forest">
-                  Call now
+                  {ui.visit.callNow}
                 </Button>
                 <Button
                   href={whatsappHref(
                     business.whatsapp,
-                    `Hi ${business.name}! I'd like to place an order.`,
+                    interpolate(ui.visit.orderMessage, { business: business.name }),
                   )}
                   external
                   tone="gold"
                 >
-                  Order on WhatsApp
+                  {ui.visit.orderOnWhatsapp}
                 </Button>
                 <Button href={mapsHref(fullAddress)} external variant="ghost" tone="forest">
-                  Open in Maps
+                  {ui.visit.openInMaps}
                 </Button>
               </div>
             </div>
 
             <div className="overflow-hidden rounded-float bg-cream/50">
-              <Illustration
-                name="deliveryMotorbike"
-                alt="A milkman setting off to deliver milk on his motorbike."
-              />
+              <Illustration name="deliveryMotorbike" alt={ui.alt.deliveryMotorbike} />
             </div>
           </div>
         </div>

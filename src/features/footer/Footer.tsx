@@ -1,5 +1,4 @@
-import { business } from '@content/business'
-import { navItems } from '@content/nav'
+import { useContent } from '@shared/i18n'
 import { formatPhone, telHref, whatsappHref } from '@shared/lib'
 import { Container, Heading } from '@shared/ui'
 
@@ -15,6 +14,7 @@ import { Container, Heading } from '@shared/ui'
  *    Forest computes to ~1.9:1 and fails. Moss at 100% is 5.18:1.
  */
 export function Footer() {
+  const { business, navItems, ui } = useContent()
   const year = new Date().getFullYear()
 
   return (
@@ -52,19 +52,21 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="font-bold text-gold hover:opacity-80"
               >
-                WhatsApp
+                {ui.nav.whatsapp}
               </a>
             </p>
 
             {business.fssai ? (
               <p className="mt-6 font-body text-xs tracking-[0.15em] text-sage uppercase">
-                FSSAI Lic. No. {business.fssai}
+                {ui.footer.fssaiPrefix} {business.fssai}
               </p>
             ) : null}
           </div>
 
           <div className="md:col-span-3">
-            <p className="text-[11px] font-bold tracking-[0.3em] text-gold uppercase">Explore</p>
+            <p className="text-[11px] font-bold tracking-[0.3em] text-gold uppercase">
+              {ui.footer.explore}
+            </p>
             <ul className="mt-6 space-y-3">
               {navItems.map((item) => (
                 <li key={item.href}>
@@ -80,10 +82,11 @@ export function Footer() {
           </div>
 
           <div className="md:col-span-3">
-            <p className="text-[11px] font-bold tracking-[0.3em] text-gold uppercase">Privacy</p>
+            <p className="text-[11px] font-bold tracking-[0.3em] text-gold uppercase">
+              {ui.footer.privacy}
+            </p>
             <p className="mt-6 font-body text-xs leading-relaxed text-sage">
-              This site sets no cookies, runs no analytics and has no contact form. It collects no
-              personal data of any kind. Calling or messaging us uses your own phone or WhatsApp.
+              {ui.footer.privacyNote}
             </p>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import type { BusinessInfo } from './types'
+import type { BusinessInfo } from '../types'
 
 /**
  * Every value below is transcribed from the promotional banner

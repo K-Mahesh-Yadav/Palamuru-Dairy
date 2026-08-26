@@ -1,5 +1,4 @@
-import { business } from '@content/business'
-import { navItems } from '@content/nav'
+import { useContent } from '@shared/i18n'
 import { telHref, whatsappHref } from '@shared/lib'
 
 import { useMobileMenu } from './useMobileMenu'
@@ -13,6 +12,7 @@ import { useMobileMenu } from './useMobileMenu'
  * e-commerce; a cart would be a lie.
  */
 export function Nav() {
+  const { business, navItems, ui } = useContent()
   const { open, toggle, close, triggerRef } = useMobileMenu()
 
   return (
@@ -22,7 +22,7 @@ export function Nav() {
           <span aria-hidden="true">&ndash;</span> {business.name}
         </a>
 
-        <nav aria-label="Primary" className="hidden md:block">
+        <nav aria-label={ui.nav.primaryLabel} className="hidden md:block">
           <ul className="flex items-center gap-1 rounded-full bg-white/10 px-2 py-2 backdrop-blur-[20px]">
             {navItems.map((item) => (
               <li key={item.href}>
@@ -42,7 +42,7 @@ export function Nav() {
             href={telHref(business.phone)}
             className="rounded-full bg-forest px-5 py-2.5 text-[10px] font-bold tracking-[0.2em] text-cream uppercase transition-opacity duration-300 ease-signature hover:opacity-85"
           >
-            Call
+            {ui.nav.call}
           </a>
           <a
             href={whatsappHref(business.whatsapp)}
@@ -50,7 +50,7 @@ export function Nav() {
             rel="noopener noreferrer"
             className="hidden rounded-full bg-gold px-5 py-2.5 text-[10px] font-bold tracking-[0.2em] text-forest uppercase transition-opacity duration-300 ease-signature hover:opacity-85 sm:block"
           >
-            WhatsApp
+            {ui.nav.whatsapp}
           </a>
 
           <button
@@ -61,7 +61,7 @@ export function Nav() {
             aria-controls="mobile-menu"
             className="rounded-full border border-forest/30 px-4 py-2.5 text-[10px] font-bold tracking-[0.2em] text-forest uppercase md:hidden"
           >
-            {open ? 'Close' : 'Menu'}
+            {open ? ui.nav.close : ui.nav.menu}
           </button>
         </div>
       </div>
@@ -69,7 +69,7 @@ export function Nav() {
       {open ? (
         <nav
           id="mobile-menu"
-          aria-label="Primary"
+          aria-label={ui.nav.primaryLabel}
           className="mx-6 rounded-3xl border border-forest/10 bg-cream p-4 shadow-lg md:hidden"
         >
           <ul className="flex flex-col">

@@ -1,4 +1,4 @@
-import { business } from '@content/business'
+import { useContent } from '@shared/i18n'
 import { formatPhone, telHref } from '@shared/lib'
 
 /**
@@ -6,6 +6,8 @@ import { formatPhone, telHref } from '@shared/lib'
  * illustrations, so it can render even when the rest of the app cannot.
  */
 export function FatalFallback() {
+  const { business, ui } = useContent()
+
   return (
     <main id="main" className="flex min-h-svh items-center justify-center bg-cream p-8 text-forest">
       <div className="max-w-md text-center">
@@ -13,9 +15,7 @@ export function FatalFallback() {
         <p className="mt-4 font-body text-[11px] font-bold tracking-[0.3em] uppercase">
           {business.wordmarkTagline}
         </p>
-        <p className="mt-10 font-body text-sm leading-relaxed">
-          Something went wrong loading this page. You can still reach us directly.
-        </p>
+        <p className="mt-10 font-body text-sm leading-relaxed">{ui.error.message}</p>
         <p className="mt-6 font-display text-4xl">
           <a href={telHref(business.phone)}>{formatPhone(business.phone)}</a>
         </p>

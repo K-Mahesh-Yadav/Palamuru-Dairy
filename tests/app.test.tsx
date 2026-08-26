@@ -1,8 +1,16 @@
-import { render, screen, within } from '@testing-library/react'
+import { render as rtlRender, screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
 import { App } from '@/app/App'
-import { navItems } from '@content/nav'
+import { en } from '@content/en'
+import { ContentProvider } from '@shared/i18n'
+
+const { navItems } = en
+
+/** Every test renders through the provider, exactly as main.tsx does. */
+function render(ui: React.ReactElement) {
+  return rtlRender(<ContentProvider locale="en">{ui}</ContentProvider>)
+}
 
 describe('page structure', () => {
   it('has exactly one h1 and it names the business', () => {

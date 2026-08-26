@@ -1,4 +1,4 @@
-import type { Product } from './types'
+import type { Product } from '../types'
 
 /**
  * The banner shows five product chips plus the hero milk bottle.

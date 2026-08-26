@@ -1,9 +1,10 @@
-import { benefits } from '@content/benefits'
 import { useReveal } from '@shared/hooks'
+import { useContent } from '@shared/i18n'
 import { Container, Icon, Section } from '@shared/ui'
 
 /** The banner's four-item benefits strip. */
 export function BenefitsBand() {
+  const { benefits } = useContent()
   const { ref, revealed } = useReveal<HTMLUListElement>()
 
   return (

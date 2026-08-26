@@ -1,12 +1,21 @@
 /**
  * Content types for Palamuru Dairy.
  *
- * DISCIPLINE: every field here traces to the banner transcription in
- * PLAN.md A1. Optional fields are the things the banner does NOT cover.
- * With `exactOptionalPropertyTypes` on, an absent field is genuinely absent —
- * a section cannot render a placeholder for it, it renders nothing.
+ * DISCIPLINE: every field in the *business* types traces to the banner
+ * transcription in PLAN.md A1. Optional fields are the things the banner does
+ * NOT cover. With `exactOptionalPropertyTypes` on, an absent field is genuinely
+ * absent — a section cannot render a placeholder for it, it renders nothing.
  * Never fabricate a value to fill one of these in.
+ *
+ * UiStrings is different: those are interface labels we author, not banner
+ * copy, so they may be written and translated freely.
  */
+
+/**
+ * Supported locales. Widened to include 'te' in Phase 10 — kept to 'en' here
+ * so no half-built Telugu can be referenced before it exists.
+ */
+export type Locale = 'en'
 
 /**
  * Illustration keys. Declared here rather than imported from @shared/assets so
@@ -101,4 +110,85 @@ export interface BusinessInfo {
   readonly email?: string
   /** No social handles appear anywhere on the banner. */
   readonly social?: readonly { readonly label: string; readonly href: string }[]
+}
+
+/** Interface labels. Not banner copy — see the note at the top of this file. */
+export interface UiStrings {
+  readonly skipToContent: string
+
+  readonly nav: {
+    readonly menu: string
+    readonly close: string
+    readonly primaryLabel: string
+    readonly call: string
+    readonly whatsapp: string
+    /** The name of THIS language, in this language. Shown on the switcher. */
+    readonly languageName: string
+    readonly switchLanguageLabel: string
+  }
+
+  readonly products: {
+    readonly heading: string
+    readonly action: string
+    readonly enquire: string
+    /** Placeholders: {business}, {product}. */
+    readonly enquiryMessage: string
+  }
+
+  readonly honey: {
+    readonly heading: string
+  }
+
+  readonly visit: {
+    readonly heading: string
+    readonly address: string
+    readonly mobile: string
+    readonly hours: string
+    readonly deliveryAreas: string
+    readonly callNow: string
+    readonly orderOnWhatsapp: string
+    readonly openInMaps: string
+    /** Placeholder: {business}. */
+    readonly orderMessage: string
+  }
+
+  readonly footer: {
+    readonly explore: string
+    readonly privacy: string
+    readonly privacyNote: string
+    readonly fssaiPrefix: string
+  }
+
+  readonly error: {
+    readonly message: string
+  }
+
+  /**
+   * Alt text for the section illustrations, keyed by illustration.
+   * Alt text is read aloud, so it is user-facing copy and must be translated.
+   * Product-card alts live on the product itself, beside the product name.
+   */
+  readonly alt: {
+    readonly milkingTheCow: string
+    readonly deliveryMotorbike: string
+  }
+}
+
+/** Per-page document metadata. Differs per locale for SEO. */
+export interface DocumentMeta {
+  readonly title: string
+  readonly description: string
+}
+
+/** Everything one locale provides. getContent(locale) returns this. */
+export interface Content {
+  readonly locale: Locale
+  readonly meta: DocumentMeta
+  readonly business: BusinessInfo
+  readonly products: readonly Product[]
+  readonly honeyVarieties: readonly HoneyVariety[]
+  readonly claims: readonly Claim[]
+  readonly benefits: readonly Benefit[]
+  readonly navItems: readonly NavItem[]
+  readonly ui: UiStrings
 }

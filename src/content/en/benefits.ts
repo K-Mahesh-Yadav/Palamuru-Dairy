@@ -1,4 +1,4 @@
-import type { Benefit } from './types'
+import type { Benefit } from '../types'
 
 /** The banner's four-item benefits strip. */
 export const benefits: readonly Benefit[] = [

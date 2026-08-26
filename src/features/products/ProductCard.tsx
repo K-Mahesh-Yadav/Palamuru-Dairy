@@ -1,5 +1,5 @@
-import { business } from '@content/business'
 import type { Product } from '@content/types'
+import { interpolate, useContent } from '@shared/i18n'
 import { cn, whatsappHref } from '@shared/lib'
 import { Illustration, Pill } from '@shared/ui'
 
@@ -21,9 +21,10 @@ export interface ProductCardProps {
  *          template.md's hover-only reveal is invisible to keyboard users.
  */
 export function ProductCard({ product, index, revealed }: ProductCardProps) {
+  const { business, ui } = useContent()
   const enquiry = whatsappHref(
     business.whatsapp,
-    `Hi ${business.name}! I'd like to know more about ${product.name}.`,
+    interpolate(ui.products.enquiryMessage, { business: business.name, product: product.name }),
   )
 
   return (
@@ -68,7 +69,7 @@ export function ProductCard({ product, index, revealed }: ProductCardProps) {
               'focus-visible:translate-y-0',
             )}
           >
-            Enquire
+            {ui.products.enquire}
           </a>
         </div>
       </div>

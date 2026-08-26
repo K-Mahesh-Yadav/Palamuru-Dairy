@@ -1,4 +1,4 @@
-import type { NavItem } from './types'
+import type { NavItem } from '../types'
 
 /**
  * hrefs are in-page anchors. Each must match a rendered Section id —
