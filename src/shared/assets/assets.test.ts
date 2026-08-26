@@ -27,10 +27,18 @@ describe('illustration barrel', () => {
     expect(fromBarrel).toEqual([...fromUnion].sort())
   })
 
-  it('resolves every key to a real URL', () => {
-    for (const [key, url] of Object.entries(illustrations)) {
-      expect(url, `${key} did not resolve`).toBeTruthy()
-      expect(typeof url).toBe('string')
+  it('resolves every key to all three formats', () => {
+    for (const [key, src] of Object.entries(illustrations)) {
+      for (const format of ['avif', 'webp', 'fallback'] as const) {
+        expect(src[format], `${key}.${format} did not resolve`).toBeTruthy()
+        expect(typeof src[format], `${key}.${format}`).toBe('string')
+      }
+    }
+  })
+
+  it('offers avif and webp as genuinely distinct files', () => {
+    for (const [key, src] of Object.entries(illustrations)) {
+      expect(src.avif, key).not.toBe(src.webp)
     }
   })
 

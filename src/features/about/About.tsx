@@ -1,8 +1,7 @@
 import { business } from '@content/business'
 import { claims } from '@content/claims'
-import { illustrations, ILLUSTRATION_SIZE } from '@shared/assets'
 import { useReveal } from '@shared/hooks'
-import { Container, Heading, Icon, Section } from '@shared/ui'
+import { Container, Heading, Icon, Illustration, Section } from '@shared/ui'
 
 /**
  * The banner's four upper-right icon rows.
@@ -45,14 +44,9 @@ export function About() {
           </div>
 
           <div className="overflow-hidden rounded-float bg-cream/50">
-            <img
-              src={illustrations.milkingTheCow}
+            <Illustration
+              name="milkingTheCow"
               alt="A dairy farmer milking a cow by hand into a pail."
-              width={ILLUSTRATION_SIZE.width}
-              height={ILLUSTRATION_SIZE.height}
-              loading="lazy"
-              decoding="async"
-              className="h-auto w-full"
             />
           </div>
         </div>

@@ -1,5 +1,4 @@
 import { business } from '@content/business'
-import { illustrations } from '@shared/assets'
 import { Container, Heading, Pill, Section } from '@shared/ui'
 
 import { FloatingCard } from './FloatingCard'
@@ -20,13 +19,13 @@ export function Hero() {
       className="flex min-h-svh flex-col justify-center overflow-hidden pt-32 pb-20"
     >
       <FloatingCard
-        src={illustrations.milkmanContainerShoulder}
+        name="milkmanContainerShoulder"
         alt=""
         factor={1.4}
         className="top-[12%] -left-[10%] w-[36%] max-w-[260px] md:top-[14%] md:-left-[2%] md:w-[19%]"
       />
       <FloatingCard
-        src={illustrations.milkmanWithCow}
+        name="milkmanWithCow"
         alt=""
         factor={-1}
         className="right-[-12%] bottom-[6%] w-[42%] max-w-[280px] md:right-[-3%] md:bottom-[4%] md:w-[21%]"
@@ -67,7 +66,7 @@ export function Hero() {
             {business.scriptHeadline}
           </p>
           <div className="flex items-end justify-start">
-            <p className="font-body text-[11px] font-bold tracking-[0.3em] text-forest/70 uppercase">
+            <p className="font-body text-[11px] font-bold tracking-[0.3em] text-forest/80 uppercase">
               {business.address.city}, {business.address.state}
             </p>
           </div>

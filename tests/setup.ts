@@ -1,4 +1,6 @@
 import '@testing-library/jest-dom/vitest'
+// Registers the axe matchers AND their Vitest type augmentation.
+import 'vitest-axe/extend-expect'
 
 // jsdom implements neither of these; several primitives and hooks touch them.
 Object.defineProperty(window, 'matchMedia', {

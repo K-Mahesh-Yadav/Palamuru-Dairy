@@ -1,5 +1,10 @@
 /// <reference types="vite/client" />
 
+declare module '*.avif' {
+  const src: string
+  export default src
+}
+
 interface ImportMetaEnv {
   /** Canonical origin. PUBLIC — inlined into the client bundle at build time. */
   readonly VITE_SITE_URL: string

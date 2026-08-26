@@ -9,6 +9,50 @@
       name="description"
       content="Palamuru Dairy, Mahabubnagar. Pure cow milk, curd, paneer, honey, sweets and ice cream. 100% pure and natural, no preservatives, no chemicals."
     />
+    <meta name="theme-color" content="#184010" />
+    <link rel="canonical" href="https://palamurudairy.example/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Palamuru Dairy" />
+    <meta property="og:title" content="Palamuru Dairy — Pure by Nature, Trusted by Generations" />
+    <meta
+      property="og:description"
+      content="Pure cow milk, curd, paneer, honey, sweets and ice cream in Mahabubnagar, Telangana."
+    />
+    <meta property="og:locale" content="en_IN" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!--
+      LocalBusiness structured data. Every value here is transcribed from the
+      promotional banner. openingHours and priceRange are DELIBERATELY absent:
+      the banner states neither, and inventing them would put a fabricated
+      claim into Google's knowledge graph. Add them when the owner supplies
+      real values — see the TODOs in src/content/business.ts.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Dairy",
+        "name": "Palamuru Dairy",
+        "slogan": "Pure by Nature, Trusted by Generations",
+        "telephone": "+919381466419",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Bagirtha Colony, Opposite to Junior Champs School",
+          "addressLocality": "Mahabubnagar",
+          "addressRegion": "Telangana",
+          "addressCountry": "IN"
+        },
+        "makesOffer": [
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Pure Cow Milk" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Curd" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Paneer" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Honey" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Sweets" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Ice Creams" } }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

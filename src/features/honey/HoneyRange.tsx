@@ -30,7 +30,7 @@ export function HoneyRange() {
               {variety.bullets.map((bullet) => (
                 <li
                   key={bullet}
-                  className="flex gap-3 font-body text-sm leading-relaxed text-forest/75"
+                  className="flex gap-3 font-body text-sm leading-relaxed text-forest/80"
                 >
                   <span
                     aria-hidden="true"

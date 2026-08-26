@@ -1,8 +1,7 @@
 import { business } from '@content/business'
-import { illustrations, ILLUSTRATION_SIZE } from '@shared/assets'
 import { useReveal } from '@shared/hooks'
 import { formatPhone, mapsHref, telHref, whatsappHref } from '@shared/lib'
-import { Button, Container, Heading, Section } from '@shared/ui'
+import { Button, Container, Heading, Illustration, Section } from '@shared/ui'
 
 /**
  * Replaces template.md's newsletter block (PLAN.md A6, Risk 5).
@@ -39,7 +38,7 @@ export function Visit() {
 
           <div className="mt-16 grid gap-12 md:grid-cols-2 md:gap-16">
             <div>
-              <p className="font-body text-[11px] font-bold tracking-[0.3em] text-forest/60 uppercase">
+              <p className="font-body text-[11px] font-bold tracking-[0.3em] text-forest/80 uppercase">
                 Address
               </p>
               <address className="mt-4 font-display text-2xl leading-tight text-forest not-italic md:text-3xl">
@@ -50,7 +49,7 @@ export function Visit() {
                 {business.address.city}, {business.address.state}
               </address>
 
-              <p className="mt-10 font-body text-[11px] font-bold tracking-[0.3em] text-forest/60 uppercase">
+              <p className="mt-10 font-body text-[11px] font-bold tracking-[0.3em] text-forest/80 uppercase">
                 Mobile
               </p>
               <p className="mt-4 font-display text-4xl text-forest md:text-5xl">
@@ -61,7 +60,7 @@ export function Visit() {
 
               {business.hours ? (
                 <>
-                  <p className="mt-10 font-body text-[11px] font-bold tracking-[0.3em] text-forest/60 uppercase">
+                  <p className="mt-10 font-body text-[11px] font-bold tracking-[0.3em] text-forest/80 uppercase">
                     Hours
                   </p>
                   <ul className="mt-4 space-y-1 font-body text-sm text-forest">
@@ -76,7 +75,7 @@ export function Visit() {
 
               {business.deliveryAreas ? (
                 <>
-                  <p className="mt-10 font-body text-[11px] font-bold tracking-[0.3em] text-forest/60 uppercase">
+                  <p className="mt-10 font-body text-[11px] font-bold tracking-[0.3em] text-forest/80 uppercase">
                     We deliver to
                   </p>
                   <p className="mt-4 font-body text-sm text-forest">
@@ -106,14 +105,9 @@ export function Visit() {
             </div>
 
             <div className="overflow-hidden rounded-float bg-cream/50">
-              <img
-                src={illustrations.deliveryMotorbike}
+              <Illustration
+                name="deliveryMotorbike"
                 alt="A milkman setting off to deliver milk on his motorbike."
-                width={ILLUSTRATION_SIZE.width}
-                height={ILLUSTRATION_SIZE.height}
-                loading="lazy"
-                decoding="async"
-                className="h-auto w-full"
               />
             </div>
           </div>

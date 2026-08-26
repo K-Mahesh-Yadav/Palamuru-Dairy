@@ -1,8 +1,7 @@
 import { business } from '@content/business'
 import type { Product } from '@content/types'
-import { ILLUSTRATION_SIZE, illustrations } from '@shared/assets'
 import { cn, whatsappHref } from '@shared/lib'
-import { Pill } from '@shared/ui'
+import { Illustration, Pill } from '@shared/ui'
 
 export interface ProductCardProps {
   product: Product
@@ -35,14 +34,10 @@ export function ProductCard({ product, index, revealed }: ProductCardProps) {
     >
       <div className="relative aspect-4/5 overflow-hidden rounded-card bg-cream">
         {product.image ? (
-          <img
-            src={illustrations[product.image.key]}
+          <Illustration
+            name={product.image.key}
             alt={product.image.alt}
-            width={ILLUSTRATION_SIZE.width}
-            height={ILLUSTRATION_SIZE.height}
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-contain p-6 transition-transform duration-700 ease-signature group-hover:scale-110"
+            className="h-full object-contain p-6 transition-transform duration-700 ease-signature group-hover:scale-110"
           />
         ) : (
           // No matching illustration exists for Honey, Sweets or Ice Creams.
@@ -80,7 +75,7 @@ export function ProductCard({ product, index, revealed }: ProductCardProps) {
 
       <div className="mt-5">
         <Pill>{product.name}</Pill>
-        <p className="mt-3 font-body text-sm leading-relaxed text-forest/75">
+        <p className="mt-3 font-body text-sm leading-relaxed text-forest/80">
           {product.descriptor}
         </p>
       </div>
