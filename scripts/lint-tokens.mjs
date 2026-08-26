@@ -13,8 +13,18 @@ import { join, relative, sep } from 'node:path'
 const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')
 const SRC = join(ROOT, 'src')
 
-/** Files permitted to contain hex literals. */
-const ALLOWED = new Set([join('src', 'styles', 'tokens.css')])
+/**
+ * Files permitted to contain hex literals.
+ *
+ * - tokens.css   the single source of truth itself
+ * - contrast.test.ts  asserts that the tokens ARE these exact values. A test
+ *   that pins the palette is the opposite of a component hardcoding a colour;
+ *   without the literals here the gate would have nothing to guard.
+ */
+const ALLOWED = new Set([
+  join('src', 'styles', 'tokens.css'),
+  join('src', 'styles', 'contrast.test.ts'),
+])
 
 /** Extensions that are scanned. */
 const SCANNED = new Set(['.ts', '.tsx', '.css'])

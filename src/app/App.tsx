@@ -1,9 +1,17 @@
+import { Container, Heading, Section } from '@shared/ui'
+
 export function App() {
   return (
     <>
       <div className="noise-overlay" aria-hidden="true" />
       <main id="main">
-        <h1 className="font-display text-forest">Palamuru Dairy</h1>
+        <Section tone="sage" labelledBy="site-title">
+          <Container>
+            <Heading as="h1" variant="hero" id="site-title">
+              Palamuru
+            </Heading>
+          </Container>
+        </Section>
       </main>
     </>
   )
