@@ -61,3 +61,65 @@
 
    There is no API path in shared/ui that produces gold text on a light ground.
    --------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------
+   TELUGU TYPOGRAPHY OVERRIDES
+
+   template.md's type rules are calibrated for Latin capitals. Telugu is
+   unicameral and writes a syllable as a base consonant plus combining vowel
+   matras that sit ABOVE and BELOW the base. Three of those rules are actively
+   wrong for it:
+
+     leading 0.75 / 0.8   caps have no descenders, so tight leading is safe in
+                          Latin. In Telugu it CLIPS the matras.
+     tracking -0.05em     negative tracking collides adjacent clusters.
+     tracking 0.2-0.4em   wide tracking visually detaches a matra from the
+                          consonant it belongs to, which is what makes
+                          "ప్ర కృ తి" read as fragments instead of a word.
+
+   These are correctness fixes, not restyling, and they are scoped to
+   :lang(te) — the English rendering is untouched and provably identical.
+
+   DELIBERATELY UNLAYERED. Tailwind's utilities live in @layer utilities, which
+   outranks @layer components; an earlier version of this block sat in
+   components and silently lost every cascade, so the page shipped at 23vw with
+   0.4em tracking. Unlayered rules beat every layer, which is what these need.
+
+   `uppercase` is left alone: a harmless no-op on a unicameral script.
+   --------------------------------------------------------------------------- */
+
+:root:lang(te) {
+  --font-display: 'Noto Sans Telugu', 'Nirmala UI', sans-serif;
+  --font-body: 'Noto Sans Telugu', 'Nirmala UI', sans-serif;
+}
+
+/* Weight carries the display contrast that Anton's condensed shapes carry in
+   English — there is no condensed Telugu grotesque to match Anton with. */
+:lang(te) .font-display {
+  font-weight: 800;
+}
+
+/* Telugu clusters are far wider than Latin capitals: "పాలమూరు" is 4 clusters
+   but occupies roughly the width 8 Latin caps would. Measured against the
+   viewport rather than guessed. */
+:lang(te) h1.font-display {
+  font-size: 18vw;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+:lang(te) h2.font-display {
+  font-size: 11vw;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+:lang(te) h3.font-display {
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+/* Labels, pills, nav links and buttons. */
+:lang(te) [class*='tracking-'] {
+  letter-spacing: 0.03em;
+}

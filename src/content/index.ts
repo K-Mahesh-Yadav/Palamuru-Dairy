@@ -1,4 +1,5 @@
 import { en } from './en'
+import { te } from './te'
 import type { Content, Locale } from './types'
 
 /**
@@ -9,9 +10,9 @@ import type { Content, Locale } from './types'
 export const DEFAULT_LOCALE: Locale = 'en'
 
 /** Every locale, in the order they appear in the switcher and the sitemap. */
-export const LOCALES = ['en'] as const
+export const LOCALES = ['en', 'te'] as const
 
-const CONTENT: Record<Locale, Content> = { en }
+const CONTENT: Record<Locale, Content> = { en, te }
 
 export function isLocale(value: string): value is Locale {
   return (LOCALES as readonly string[]).includes(value)
@@ -27,11 +28,13 @@ export function getContent(locale: Locale): Content {
  */
 export const LOCALE_PATH: Record<Locale, string> = {
   en: '/',
+  te: '/te/',
 }
 
 /** BCP 47 tag for <html lang> and hreflang. */
 export const LOCALE_TAG: Record<Locale, string> = {
   en: 'en-IN',
+  te: 'te-IN',
 }
 
 export type { Content, Locale } from './types'

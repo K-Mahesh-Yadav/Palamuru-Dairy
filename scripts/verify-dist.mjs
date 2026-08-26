@@ -19,7 +19,14 @@ function check(name, ok, detail = '') {
   if (!ok) failures.push(`${name}${detail === '' ? '' : ` — ${detail}`}`)
 }
 
-const html = readFileSync(join(DIST, 'index.html'), 'utf8')
+/** Every locale document that must ship, with the lang tag it must declare. */
+const DOCUMENTS = [
+  { path: 'index.html', locale: 'en', tag: 'en-IN', url: '/' },
+  { path: join('te', 'index.html'), locale: 'te', tag: 'te-IN', url: '/te/' },
+]
+
+const docs = DOCUMENTS.map((d) => ({ ...d, html: readFileSync(join(DIST, d.path), 'utf8') }))
+const html = docs[0].html
 const jsFiles = readdirSync(join(DIST, 'assets')).filter((f) => f.endsWith('.js'))
 const js = jsFiles.map((f) => readFileSync(join(DIST, 'assets', f), 'utf8')).join('\n')
 
@@ -40,6 +47,66 @@ check(
 
 check('no inline <style> in index.html', !/<style[\s>]/i.test(html))
 check('no style= attribute in index.html', !/\sstyle=["']/i.test(html))
+
+// --- Every locale document, not just the English one ------------------------
+for (const doc of docs.slice(1)) {
+  const inline = [...doc.html.matchAll(/<script(?![^>]*src=)([^>]*)>/g)].filter((m) => {
+    const type = /type=["']([^"']+)["']/.exec(m[1] ?? '')?.[1] ?? ''
+    return type === '' || /javascript|module/i.test(type)
+  })
+  check(`no executable inline <script> in ${doc.url}`, inline.length === 0)
+  check(`no inline <style> in ${doc.url}`, !/<style[\s>]/i.test(doc.html))
+  check(`no style= attribute in ${doc.url}`, !/\sstyle=["']/i.test(doc.html))
+}
+
+// --- Locale documents -------------------------------------------------------
+for (const doc of docs) {
+  check(
+    `${doc.url} declares lang="${doc.tag}"`,
+    new RegExp(`<html[^>]*lang=["']${doc.tag}["']`).test(doc.html),
+  )
+  check(`${doc.url} has a canonical link`, /rel="canonical"/.test(doc.html))
+
+  // hreflang must be RECIPROCAL: every document lists every locale plus
+  // x-default. If they disagree, Google treats the pages as unrelated.
+  for (const other of DOCUMENTS) {
+    check(
+      `${doc.url} lists hreflang ${other.tag}`,
+      new RegExp(`hreflang=["']${other.tag}["']`).test(doc.html),
+    )
+  }
+  check(`${doc.url} declares x-default`, /hreflang=["']x-default["']/.test(doc.html))
+}
+
+// A Telugu page whose metadata is still English misreports the business.
+const teDoc = docs.find((d) => d.locale === 'te')
+if (teDoc) {
+  const ld = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(teDoc.html)?.[1] ?? ''
+  let ldValid = false
+  try {
+    JSON.parse(ld)
+    ldValid = true
+  } catch {
+    ldValid = false
+  }
+  check('/te/ JSON-LD is valid JSON', ldValid)
+  check('/te/ JSON-LD is in Telugu script', /[ఀ-౿]/.test(ld))
+  check('/te/ <title> is in Telugu script', /<title>[^<]*[ఀ-౿]/.test(teDoc.html))
+}
+
+// Each document preloads ITS OWN display font — the locales use different
+// families, and Anton contains no Telugu glyphs.
+check('/ preloads the Anton subset', /rel="preload"[^>]*anton[^>]*\.woff2/.test(docs[0].html))
+if (teDoc) {
+  check(
+    '/te/ preloads the Telugu display subset',
+    /rel="preload"[^>]*noto-sans-telugu-telugu-800[^>]*\.woff2/.test(teDoc.html),
+  )
+  check(
+    '/te/ does not preload a Latin-only display font',
+    !/rel="preload"[^>]*anton/.test(teDoc.html),
+  )
+}
 
 // --- Link hardening ---------------------------------------------------------
 const blanks = (js.match(/_blank/g) ?? []).length

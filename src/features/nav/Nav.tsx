@@ -1,6 +1,7 @@
 import { useContent } from '@shared/i18n'
 import { telHref, whatsappHref } from '@shared/lib'
 
+import { LanguageSwitcher } from './LanguageSwitcher'
 import { useMobileMenu } from './useMobileMenu'
 
 /**
@@ -38,6 +39,7 @@ export function Nav() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <LanguageSwitcher className="hidden sm:flex" />
           <a
             href={telHref(business.phone)}
             className="rounded-full bg-forest px-5 py-2.5 text-[10px] font-bold tracking-[0.2em] text-cream uppercase transition-opacity duration-300 ease-signature hover:opacity-85"
@@ -72,6 +74,7 @@ export function Nav() {
           aria-label={ui.nav.primaryLabel}
           className="mx-6 rounded-3xl border border-forest/10 bg-cream p-4 shadow-lg md:hidden"
         >
+          <LanguageSwitcher className="mb-2 border-b border-forest/10 px-4 pb-4 sm:hidden" />
           <ul className="flex flex-col">
             {navItems.map((item) => (
               <li key={item.href}>

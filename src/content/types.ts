@@ -11,11 +11,8 @@
  * copy, so they may be written and translated freely.
  */
 
-/**
- * Supported locales. Widened to include 'te' in Phase 10 — kept to 'en' here
- * so no half-built Telugu can be referenced before it exists.
- */
-export type Locale = 'en'
+/** Supported locales. `/` serves en, `/te/` serves te. */
+export type Locale = 'en' | 'te'
 
 /**
  * Illustration keys. Declared here rather than imported from @shared/assets so

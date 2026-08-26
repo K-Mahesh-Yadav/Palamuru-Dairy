@@ -1,4 +1,5 @@
 import { useContent } from '@shared/i18n'
+import { toGraphemes } from '@shared/lib'
 import { Container, Heading, Pill, Section } from '@shared/ui'
 
 import { FloatingCard } from './FloatingCard'
@@ -9,8 +10,11 @@ import { FloatingCard } from './FloatingCard'
  * parallax, dual-column bottom with descriptive text and a location label.
  */
 export function Hero() {
-  const { business } = useContent()
+  const { business, locale } = useContent()
   const word = business.name.split(' ')[0] ?? business.name
+  // Grapheme clusters, not code units — see shared/lib/text.ts. Splitting
+  // Telugu by code unit detaches every vowel matra from its base consonant.
+  const clusters = toGraphemes(word, locale)
 
   return (
     <Section
@@ -46,13 +50,13 @@ export function Hero() {
           {/* Screen readers get the plain word; the staggered spans are decoration. */}
           <span className="sr-only">{business.name}</span>
           <span aria-hidden="true">
-            {word.split('').map((letter, i) => (
+            {clusters.map((cluster, i) => (
               <span
-                key={`${letter}-${String(i)}`}
+                key={`${cluster}-${String(i)}`}
                 className="letter"
                 style={{ animationDelay: `${String(i * 0.05)}s` }}
               >
-                {letter}
+                {cluster}
               </span>
             ))}
           </span>

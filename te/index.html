@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="te-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>పాలమూరు డెయిరీ — ప్రకృతి సిద్ధమైన స్వచ్ఛత, తరతరాల నమ్మకం</title>
+    <meta
+      name="description"
+      content="పాలమూరు డెయిరీ, మహబూబ్‌నగర్. స్వచ్ఛమైన ఆవు పాలు, పెరుగు, పనీర్, తేనె, మిఠాయిలు, ఐస్ క్రీమ్. 100% స్వచ్ఛం, ప్రిజర్వేటివ్‌లు లేవు, రసాయనాలు లేవు."
+    />
+    <meta name="theme-color" content="#184010" />
+    <link rel="canonical" href="https://palamurudairy.example/te/" />
+
+    <!-- Reciprocal language alternates. Both documents must list BOTH locales
+         and agree, or Google treats them as unrelated pages. Asserted in
+         scripts/verify-dist.mjs. -->
+    <link rel="alternate" hreflang="en-IN" href="https://palamurudairy.example/" />
+    <link rel="alternate" hreflang="te-IN" href="https://palamurudairy.example/te/" />
+    <link rel="alternate" hreflang="x-default" href="https://palamurudairy.example/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Palamuru Dairy" />
+    <meta property="og:title" content="పాలమూరు డెయిరీ — ప్రకృతి సిద్ధమైన స్వచ్ఛత, తరతరాల నమ్మకం" />
+    <meta
+      property="og:description"
+      content="మహబూబ్‌నగర్‌లో స్వచ్ఛమైన ఆవు పాలు, పెరుగు, పనీర్, తేనె, మిఠాయిలు, ఐస్ క్రీమ్."
+    />
+    <meta property="og:locale" content="te_IN" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!--
+      LocalBusiness structured data. Every value here is transcribed from the
+      promotional banner. openingHours and priceRange are DELIBERATELY absent:
+      the banner states neither, and inventing them would put a fabricated
+      claim into Google's knowledge graph. Add them when the owner supplies
+      real values — see the TODOs in src/content/business.ts.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Dairy",
+        "name": "పాలమూరు డెయిరీ",
+        "slogan": "ప్రకృతి సిద్ధమైన స్వచ్ఛత, తరతరాల నమ్మకం",
+        "telephone": "+919381466419",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "బాగీర్థ కాలనీ, జూనియర్ ఛాంప్స్ స్కూల్ ఎదురుగా",
+          "addressLocality": "మహబూబ్‌నగర్",
+          "addressRegion": "తెలంగాణ",
+          "addressCountry": "IN"
+        },
+        "makesOffer": [
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "స్వచ్ఛమైన ఆవు పాలు" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "పెరుగు" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "పనీర్" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "తేనె" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "మిఠాయిలు" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "ఐస్ క్రీమ్‌లు" } }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/entries/main.te.tsx"></script>
+  </body>
+</html>

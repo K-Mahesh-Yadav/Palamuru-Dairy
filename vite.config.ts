@@ -8,29 +8,43 @@ const r = (p: string) => fileURLToPath(new URL(p, import.meta.url))
 
 // https://vite.dev/config/
 /**
- * Preload the display font.
+ * Preload each document's display font.
  *
- * The hero headline is the LCP element and it is set in Anton, so LCP is
- * font-dependent. Filenames are content-hashed, so the tag has to be injected
- * after the bundle is known rather than hardcoded in index.html.
- * PLAN.md B6: when LCP misses, preload the Anton subset — do not shrink type.
+ * The hero headline is the LCP element, so LCP is font-dependent — and the two
+ * locales use different families (Anton has no Telugu glyphs). Filenames are
+ * content-hashed, so the tag must be injected once the bundle is known.
+ * PLAN.md B6: when LCP misses, preload the display subset — do not shrink type.
  */
 function preloadDisplayFont(): Plugin {
-  let href = ''
+  /** entry name -> regex matching its display font file */
+  const WANTED: Record<string, RegExp> = {
+    en: /anton.*\.woff2$/,
+    te: /noto-sans-telugu-telugu-800.*\.woff2$/,
+  }
+  // Optional-valued: a lookup genuinely can miss if a font fails to emit,
+  // and vite.config.ts is checked without noUncheckedIndexedAccess.
+  const found: Record<string, string | undefined> = {}
+
   return {
     name: 'preload-display-font',
     apply: 'build' as const,
     generateBundle(_options: unknown, bundle: Record<string, unknown>) {
-      const match = Object.keys(bundle).find((f) => /anton.*\.woff2$/.test(f))
-      href = match === undefined ? '' : `/${match}`
+      const files = Object.keys(bundle)
+      for (const [entry, pattern] of Object.entries(WANTED)) {
+        const match = files.find((f) => pattern.test(f))
+        if (match !== undefined) found[entry] = `/${match}`
+      }
     },
-    transformIndexHtml() {
-      if (href === '') return []
+    transformIndexHtml(_html: string, ctx: { path?: string }) {
+      // ctx.path is '/index.html' or '/te/index.html'.
+      const entry = ctx.path?.includes('/te/') === true ? 'te' : 'en'
+      const href = found[entry]
+      if (href === undefined) return []
       return [
         {
           tag: 'link',
           attrs: { rel: 'preload', as: 'font', type: 'font/woff2', href, crossorigin: '' },
-          injectTo: 'head-prepend',
+          injectTo: 'head-prepend' as const,
         },
       ]
     },
@@ -52,6 +66,16 @@ export default defineConfig({
   },
 
   build: {
+    rollupOptions: {
+      // One static HTML document per locale. No router: the original plan
+      // chose extra entries over routing, and a language switch is a page
+      // navigation anyway. Real URLs mean Google can index both.
+      input: {
+        en: r('./index.html'),
+        te: r('./te/index.html'),
+      },
+    },
+
     // Audience is Indian mobile Chrome — es2022 is safe and cuts transpile weight.
     target: 'es2022',
     // No error-tracking service consumes them; don't ship source of a commercial site.
