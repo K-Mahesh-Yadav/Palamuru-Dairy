@@ -20,3 +20,7 @@ coverage
 Thumbs.db
 
 # NOTE: package-lock.json is deliberately NOT ignored (see PLAN.md B5, dependency policy)
+.playwright-mcp/
+*.png
+!public/*.png
+!src/**/*.png

@@ -8,14 +8,35 @@
  * Never fabricate a value to fill one of these in.
  */
 
+/**
+ * Illustration keys. Declared here rather than imported from @shared/assets so
+ * that content stays a leaf layer (it may not import shared). A test asserts
+ * this union stays in step with the actual asset barrel.
+ */
+export type IllustrationKey =
+  | 'atTheLaptop'
+  | 'deliveryMotorbike'
+  | 'fillingContainer'
+  | 'holdingMilkContainer'
+  | 'milkingTheCow'
+  | 'milkmanContainerShoulder'
+  | 'milkmanWithCow'
+  | 'servingCustomer'
+  | 'twoContainers'
+  | 'whiteboard'
+
 /** A product in the main range. */
 export interface Product {
   readonly id: string
   readonly name: string
   /** Verbatim descriptor from the banner. */
   readonly descriptor: string
-  /** Illustration import, or absent where no matching asset exists. */
-  readonly image?: { readonly src: string; readonly alt: string }
+  /**
+   * Illustration for this product, or absent where no matching asset exists.
+   * Honey, Sweets and Ice Creams have none — they render as typographic cards
+   * rather than borrowing an unrelated image.
+   */
+  readonly image?: { readonly key: IllustrationKey; readonly alt: string }
   /** NOT ON THE BANNER. Stays undefined until a real price list exists. */
   readonly price?: string
 }

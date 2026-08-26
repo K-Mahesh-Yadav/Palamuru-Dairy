@@ -1,0 +1,1 @@
+export { BenefitsBand } from './BenefitsBand'

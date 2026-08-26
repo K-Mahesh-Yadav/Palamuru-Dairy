@@ -43,7 +43,7 @@ export function Section({
       id={id}
       aria-labelledby={labelledBy}
       className={cn(
-        'relative w-full py-24 md:py-32',
+        'relative w-full scroll-mt-24 py-24 md:py-32',
         TONES[tone],
         roundTop && 'rounded-t-section',
         className,

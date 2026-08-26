@@ -8,6 +8,22 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 import prettier from 'eslint-config-prettier'
 
+/**
+ * One zone per feature: a feature may import from src/features only if the
+ * target is itself. This is the exact statement of "features must never
+ * import each other", and unlike no-relative-parent-imports it is blind to
+ * whether the import was written as an alias or a relative path — the rule
+ * matches on the RESOLVED file, so both forms are caught.
+ */
+const FEATURES = ['nav', 'hero', 'products', 'honey', 'about', 'benefits', 'visit', 'footer']
+
+const siblingFeatureZones = FEATURES.map((name) => ({
+  target: `./src/features/${name}`,
+  from: './src/features',
+  except: [`./${name}`],
+  message: `features/${name} must not import a sibling feature. Promote the shared part into src/shared instead.`,
+}))
+
 export default tseslint.config(
   { ignores: ['dist', 'node_modules', 'coverage', 'Assets'] },
 
@@ -86,6 +102,7 @@ export default tseslint.config(
               from: './src/app',
               message: 'content is a leaf: it may not import app.',
             },
+            ...siblingFeatureZones,
           ],
         },
       ],
@@ -115,19 +132,6 @@ export default tseslint.config(
         'error',
         { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
       ],
-    },
-  },
-
-  // ---------------------------------------------------------------------------
-  // Features: seal the relative-path loophole. Without this, a sibling feature
-  // could be reached as '../products/ProductCard', bypassing the alias forbid
-  // list above. Cross-directory imports must go through an alias, which is
-  // then policed by no-internal-modules.
-  // ---------------------------------------------------------------------------
-  {
-    files: ['src/features/**/*.{ts,tsx}'],
-    rules: {
-      'import/no-relative-parent-imports': 'error',
     },
   },
 

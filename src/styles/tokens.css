@@ -35,6 +35,14 @@
   --ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-reveal: 1200ms;
 
+  /* template.md: "MUST: Use the exact cubic-bezier (0.16, 1, 0.3, 1) for ALL
+     transitions to ensure the 'premium' motion signature."
+     Tailwind ships cubic-bezier(0.4, 0, 0.2, 1) as the default for every
+     `transition-*` utility, which would quietly violate that on any element
+     that does not name ease-signature explicitly. Overriding the default is
+     what actually makes the mandate hold across the whole site. */
+  --default-transition-timing-function: var(--ease-signature);
+
   /* --- Elevation --------------------------------------------------------- */
   /* Forest re-expressed at 20% — a mechanical consequence of move 1, not a
      separate design decision. template.md: rgba(1, 71, 46, 0.2). */

@@ -50,3 +50,80 @@
     border-width: 0;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   MOTION — template.md, values unchanged.
+   Every transition uses the signature curve cubic-bezier(0.16, 1, 0.3, 1).
+   --------------------------------------------------------------------------- */
+
+@layer components {
+  /* Reveal: translateY(100px)/opacity 0 -> translateY(0)/opacity 1 over 1.2s */
+  .reveal {
+    opacity: 0;
+    transform: translateY(100px);
+    transition:
+      opacity var(--duration-reveal) var(--ease-signature),
+      transform var(--duration-reveal) var(--ease-signature);
+  }
+
+  .reveal[data-revealed='true'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Floating organic cards: translateY -20px, rotate 5deg, infinite */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-20px) rotate(5deg);
+    }
+  }
+
+  .float {
+    animation: float 7s ease-in-out infinite;
+  }
+
+  /* Hero letter stagger: 0.05s per letter */
+  .letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(100px);
+    animation: letter-in 1.2s var(--ease-signature) forwards;
+  }
+
+  @keyframes letter-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Never let a scroll-driven effect hide content on paper. */
+  @media print {
+    .reveal,
+    .letter {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .float {
+      animation: none;
+    }
+
+    .letter {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

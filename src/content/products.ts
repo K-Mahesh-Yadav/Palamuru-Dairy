@@ -13,16 +13,28 @@ export const products: readonly Product[] = [
     id: 'milk',
     name: 'Pure Cow Milk',
     descriptor: '100% Pure & Natural',
+    image: {
+      key: 'holdingMilkContainer',
+      alt: 'A milkman carrying a steel milk container.',
+    },
   },
   {
     id: 'curd',
     name: 'Curd',
     descriptor: 'Fresh & Thick, Delicious Curd',
+    image: {
+      key: 'twoContainers',
+      alt: 'A milkman carrying a steel milk container in each hand.',
+    },
   },
   {
     id: 'paneer',
     name: 'Paneer',
     descriptor: 'Soft, Fresh & High in Protein',
+    image: {
+      key: 'servingCustomer',
+      alt: 'A milkman measuring out milk for a customer.',
+    },
   },
   {
     id: 'honey',

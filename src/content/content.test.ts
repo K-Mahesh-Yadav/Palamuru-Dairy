@@ -127,3 +127,23 @@ describe('nav', () => {
     expect(new Set(navItems.map((n) => n.href)).size).toBe(navItems.length)
   })
 })
+
+describe('product illustrations', () => {
+  it('assigns an image only where a real matching asset exists', () => {
+    const withImage = products.filter((p) => p.image !== undefined).map((p) => p.id)
+    const without = products.filter((p) => p.image === undefined).map((p) => p.id)
+
+    expect(withImage).toEqual(['milk', 'curd', 'paneer'])
+    // No illustration exists for these three. They render as typographic
+    // cards rather than borrowing an unrelated image (PLAN.md A7 / Risk 6).
+    expect(without).toEqual(['honey', 'sweets', 'ice-creams'])
+  })
+
+  it('gives every assigned image descriptive alt text', () => {
+    for (const p of products) {
+      if (p.image === undefined) continue
+      expect(p.image.alt.length).toBeGreaterThan(15)
+      expect(p.image.alt).toMatch(/\.$/)
+    }
+  })
+})
