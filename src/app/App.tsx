@@ -1,3 +1,4 @@
+import { business } from '@content/business'
 import { Container, Heading, Section } from '@shared/ui'
 
 export function App() {
@@ -8,7 +9,7 @@ export function App() {
         <Section tone="sage" labelledBy="site-title">
           <Container>
             <Heading as="h1" variant="hero" id="site-title">
-              Palamuru
+              {business.name}
             </Heading>
           </Container>
         </Section>

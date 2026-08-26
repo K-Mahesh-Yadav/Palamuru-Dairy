@@ -5,10 +5,10 @@ import { Button, Heading, Pill, Section } from './index'
 
 describe('Button', () => {
   it('renders an anchor when href is present', () => {
-    render(<Button href="tel:9381466419">Call</Button>)
+    render(<Button href="tel:+10000000000">Call</Button>)
     const el = screen.getByRole('link', { name: 'Call' })
     expect(el.tagName).toBe('A')
-    expect(el).toHaveAttribute('href', 'tel:9381466419')
+    expect(el).toHaveAttribute('href', 'tel:+10000000000')
   })
 
   it('renders a button when href is absent', () => {
@@ -18,8 +18,8 @@ describe('Button', () => {
 
   it('adds rel="noopener noreferrer" to external links only', () => {
     const { rerender } = render(
-      <Button href="https://wa.me/919381466419" external>
-        WhatsApp
+      <Button href="https://example.com/external" external>
+        External
       </Button>,
     )
     expect(screen.getByRole('link')).toHaveAttribute('rel', 'noopener noreferrer')
@@ -33,11 +33,13 @@ describe('Heading', () => {
   it('honours `as` independently of `variant`', () => {
     render(
       <Heading as="h2" variant="card">
-        Multiflora Honey
+        Example Card Title
       </Heading>,
     )
     // sized like a card, but semantically a level-2 heading
-    expect(screen.getByRole('heading', { level: 2, name: 'Multiflora Honey' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Example Card Title' }),
+    ).toBeInTheDocument()
   })
 })
 
@@ -70,7 +72,7 @@ describe('Section', () => {
 
 describe('Pill', () => {
   it('pairs a gold fill with forest text, never gold text', () => {
-    const { container } = render(<Pill>Curd</Pill>)
+    const { container } = render(<Pill>Example</Pill>)
     const el = container.firstElementChild
     expect(el).toHaveClass('bg-gold')
     expect(el).toHaveClass('text-forest')
