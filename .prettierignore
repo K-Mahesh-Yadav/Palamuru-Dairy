@@ -1,5 +1,7 @@
 Assets
+LAUNCH.md
 PLAN.md
+README.md
 dist
 node_modules
 package-lock.json
