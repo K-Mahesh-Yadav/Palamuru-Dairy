@@ -47,9 +47,23 @@ can judge a translation, and a check that fails from day one gets ignored.
 | 13 | **Cloudflare Web Analytics** | Script-free and cookie-free, so it needs no CSP change. Do NOT add Google Analytics — it would force loosening both `connect-src` and `script-src`. |
 | 14 | **Push to GitHub** | Repo is committed locally but has no remote. Dependabot and CI only start once it is pushed. |
 
+## Deployed
+
+Live at **https://palamuru-dairy.vercel.app** (Telugu at `/te/`), auto-deploying
+from `main`. Everything below is verified against the production URL.
+
 ## After first deploy — verify on the real URL
 
-- [ ] Open the deploy preview with DevTools console open: **zero CSP violations**
+- [x] Zero CSP violations on both locales in production
+- [x] All 8 security headers served — CSP, HSTS, nosniff, Referrer-Policy,
+      Permissions-Policy, COOP, CORP, X-Frame-Options
+- [x] CSP negative-tested live: inline script, outbound fetch and third-party
+      image all blocked
+- [x] Lighthouse mobile in production: 97 / 100 / 100 / 92 on both locales
+      (SEO capped by our own CSP — see `.lighthouseci-notes.md`)
+- [x] LCP 1.7-1.8s in production, **under the 2.0s budget** (the CDN beats the
+      local preview that measured 2.2s)
+- [x] Auto-deploy confirmed: pushing to `main` built and released automatically
 - [ ] `securityheaders.com` against the URL: expect **A+**
 - [ ] Lighthouse mobile on **both** `/` and `/te/` (local: 97 and 96, all other categories 100)
 - [ ] Switch language both ways and confirm the URL changes to `/te/` and back

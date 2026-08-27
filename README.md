@@ -68,6 +68,18 @@ were changed against it (Forest, Cream, and Gold added); everything else —
 typography, radii, motion curve, layout — is preserved verbatim. `PLAN.md`
 records every decision and its reason.
 
+## Live
+
+| URL | Language |
+|---|---|
+| https://palamuru-dairy.vercel.app/ | English |
+| https://palamuru-dairy.vercel.app/te/ | తెలుగు |
+
+Production Lighthouse (mobile): performance 97, accessibility 100, best
+practices 100, SEO 92. The SEO number is capped by our own CSP — see
+`.lighthouseci-notes.md`; real crawlers are unaffected and the fix would be to
+weaken a security header, so it stays.
+
 ## Deploying
 
 Static `dist/` with two documents (`index.html`, `te/index.html`).
