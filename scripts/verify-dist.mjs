@@ -210,6 +210,38 @@ check(
 check('vercel.json emits the directory these checks read', vercel.outputDirectory === 'dist')
 check('vercel.json installs from the committed lockfile', vercel.installCommand === 'npm ci')
 
+// --- Public URLs ------------------------------------------------------------
+// A canonical pointing at a domain that does not resolve is worse than no
+// canonical: Google follows it, finds nothing, and may decline to index the
+// real page. This shipped once with a .example placeholder — hence the gate.
+const RESERVED_TLD = /https?:\/\/[^"'\s]*\.(example|invalid|test|localhost)(\/|["'\s]|$)/i
+for (const doc of docs) {
+  const hit = RESERVED_TLD.exec(doc.html)
+  check(`${doc.url} points at no reserved-TLD placeholder domain`, hit === null, hit?.[0] ?? '')
+}
+for (const asset of ['robots.txt', 'sitemap.xml']) {
+  const text = readFileSync(join(DIST, asset), 'utf8')
+  const hit = RESERVED_TLD.exec(text)
+  check(`${asset} points at no reserved-TLD placeholder domain`, hit === null, hit?.[0] ?? '')
+}
+
+// Canonical and hreflang must agree on one origin, or they cancel out.
+const origins = new Set()
+for (const doc of docs) {
+  for (const m of doc.html.matchAll(
+    /rel="(?:canonical|alternate)"[^>]*href="(https?:\/\/[^/"]+)/g,
+  )) {
+    origins.add(m[1])
+  }
+}
+check('canonical and hreflang share a single origin', origins.size === 1, [...origins].join(' vs '))
+
+// Every locale must appear in the sitemap, or half the site is invisible.
+const sitemap = readFileSync(join(DIST, 'sitemap.xml'), 'utf8')
+for (const doc of docs) {
+  check(`sitemap lists ${doc.url}`, sitemap.includes(`${[...origins][0] ?? ''}${doc.url}`))
+}
+
 // --- Report -----------------------------------------------------------------
 for (const c of checks) console.log(`  ${c.ok ? 'ok  ' : 'FAIL'} ${c.name}`)
 console.log('')

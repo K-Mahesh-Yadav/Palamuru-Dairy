@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://palamurudairy.example/sitemap.xml
+Sitemap: https://palamuru-dairy.vercel.app/sitemap.xml

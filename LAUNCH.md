@@ -41,7 +41,7 @@ can judge a translation, and a check that fails from day one gets ignored.
 
 | # | Item | Note |
 |---|---|---|
-| 10 | **Buy a domain** | Then set `VITE_SITE_URL`, the `<link rel="canonical">` in `index.html`, `public/robots.txt` and `public/sitemap.xml`. All four currently say `palamurudairy.example`. |
+| 10 | **Buy a domain** (optional) | The site is live at `palamuru-dairy.vercel.app` and every canonical, hreflang and sitemap URL points there, so it is correctly indexable as-is. To move to a custom domain, add it in the Vercel dashboard and then update `VITE_SITE_URL`, the canonical and hreflang links in `index.html` and `te/index.html`, `public/robots.txt` and `public/sitemap.xml` — `npm run verify:dist` fails if any of them still points somewhere unreachable. |
 | 11 | **Cloudflare Pages project** | Build `npm run build`, output `dist`, `NODE_VERSION=22`. Connect the repo; production on `main`, preview per PR. |
 | 12 | **Enable Always Use HTTPS + min TLS 1.2** | Dashboard settings, not `_headers`. |
 | 13 | **Cloudflare Web Analytics** | Script-free and cookie-free, so it needs no CSP change. Do NOT add Google Analytics — it would force loosening both `connect-src` and `script-src`. |
